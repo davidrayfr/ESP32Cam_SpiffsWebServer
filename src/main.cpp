@@ -8,7 +8,37 @@ const char *ssid = "MaisonRay300";
 const char *password = "CamilleEmilie";
 const int led = 2;
 const int capteurLuminosite = 34;
+/*
+WIFI_OFF     WIFI_MODE_NULL
+WIFI_STA     WIFI_MODE_STA
+WIFI_AP      WIFI_MODE_AP
+WIFI_AP_STA  WIFI_MODE_APSTA */
 
+struct EEPROM_Data {
+  unsigned long magic;
+  char WiFiMode[4];
+  char ssid[32];
+  char password[16];
+  char ota_password[16];
+  char hostname[64];
+  char http_enable;
+  char rtsp_enable;
+  unsigned short rtsp_port;
+  };
+
+//Initial Valeur stored in EEPROM
+const EEPROM_Data (INITIAL_VALUE){
+                    STRUCT_MAGIC,
+                    "STA",
+                    "MaisonRay300",
+                    "CamilleEmilie",
+                    "123456",
+                    "Esp32Cam",
+                    false,
+                    false,
+                    554
+                };
+                
 AsyncWebServer server(80);
 
 void setup()
