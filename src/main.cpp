@@ -8,6 +8,8 @@ const char *ssid = "MaisonRay300";
 const char *password = "CamilleEmilie";
 const int led = 2;
 const int capteurLuminosite = 34;
+const char *version= "0.0";
+
 /*
 WIFI_OFF     WIFI_MODE_NULL
 WIFI_STA     WIFI_MODE_STA
@@ -108,15 +110,21 @@ void setup()
     request->send(200, "text/plain", luminosite);
   });
 
-  server.on("/on", HTTP_GET, [](AsyncWebServerRequest *request)
+  server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    digitalWrite(led, HIGH);
+    serial.println("RESTART BUTTON");
     request->send(200);
   });
 
-  server.on("/off", HTTP_GET, [](AsyncWebServerRequest *request)
+  server.on("/save", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    digitalWrite(led, LOW);
+    serial.println("SAVE BUTTON");
+    request->send(200);
+  });
+  
+  server.on("/reinit", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    serial.println("REINIT BUTTON");
     request->send(200);
   });
 

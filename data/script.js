@@ -1,12 +1,17 @@
 function saveButton() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "SAVE", true);
+    xhttp.open("GET", "save", true);
     xhttp.send();
 }
 
+function reinitButton() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "reinit", true);
+    xhttp.send();
+}
 function restartButton() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "RESTART", true);
+    xhttp.open("GET", "restart", true);
     xhttp.send();
 }
 
