@@ -1,4 +1,5 @@
 // Web Server with SPIFFS
+#define STRUCT_MAGIC 12345678
 
 #include <Arduino.h>
 #include <spiffs.h>
@@ -17,30 +18,30 @@ WIFI_AP      WIFI_MODE_AP
 WIFI_AP_STA  WIFI_MODE_APSTA */
 
 struct EEPROM_Data {
-  unsigned long magic;
+  long unsigned int magic;
   char WiFiMode[4];
   char ssid[32];
-  char password[16];
-  char ota_password[16];
+  char WiFiPassword[32];
+  char OTApassword[32];
   char hostname[64];
-  char http_enable;
-  char rtsp_enable;
+  bool http_enable;
+  bool rtsp_enable;
   unsigned short rtsp_port;
   };
 
 //Initial Valeur stored in EEPROM
-const EEPROM_Data (INITIAL_VALUE){
+const struct EEPROM_Data INITIAL_VALUE={
                     STRUCT_MAGIC,
                     "STA",
-                    "MaisonRay300",
+                   "MaisonRay300",
                     "CamilleEmilie",
                     "123456",
                     "Esp32Cam",
                     false,
-                    false,
+                   false,
                     554
                 };
-                
+
 AsyncWebServer server(80);
 
 void setup()
@@ -112,19 +113,19 @@ void setup()
 
   server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    serial.println("RESTART BUTTON");
+    Serial.println("RESTART BUTTON");
     request->send(200);
   });
 
   server.on("/save", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    serial.println("SAVE BUTTON");
+    Serial.println("SAVE BUTTON");
     request->send(200);
   });
   
   server.on("/reinit", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    serial.println("REINIT BUTTON");
+    Serial.println("REINIT BUTTON");
     request->send(200);
   });
 
