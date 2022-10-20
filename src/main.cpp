@@ -2,14 +2,14 @@
 #define STRUCT_MAGIC 12345678
 
 #include <Arduino.h>
-#include <spiffs.h>
+#include "SPIFFS.h"
 #include "ESPAsyncWebServer.h"
 
 const char *ssid = "MaisonRay300";
 const char *password = "CamilleEmilie";
 const int led = 2;
 const int capteurLuminosite = 34;
-const char *version= "0.0";
+const char *version= "0.1";
 
 /*
 WIFI_OFF     WIFI_MODE_NULL
@@ -44,6 +44,27 @@ const struct EEPROM_Data INITIAL_VALUE={
 
 AsyncWebServer server(80);
 
+/*String processor(const String& var){
+  Serial.println(var);
+  if(var == "ADRESSEIP"){
+    String val=String(WiFi.localIP());
+    Serial.println(val);
+    return val;
+  }
+  return String();
+}*/
+
+String chaine(void){
+  String ch=String("<?xml version = \"1.0\" ?>")+String("<inputs>");
+    ch=ch+String("<version>")+String(version)+String("</version>");
+    ch=ch+String("<ipadresse>")+WiFi.localIP().toString()+String("</ipadresse>"); 
+    ch=ch+String("<ssid>")+String(INITIAL_VALUE.ssid)+String("</ssid>"); 
+    ch=ch+String("<hostname>")+String(INITIAL_VALUE.hostname)+String("</hostname>");
+    ch=ch+String("<portrtsp>")+String(INITIAL_VALUE.rtsp_port)+String("</portrtsp>");
+    ch=ch+String("</inputs>");
+    Serial.println(ch);
+  return ch; 
+};
 void setup()
 {
   //----------------------------------------------------Serial
@@ -91,7 +112,7 @@ void setup()
   //----------------------------------------------------SERVER
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    request->send(SPIFFS, "/index.html", "text/html");
+    request->send(SPIFFS, "/index.html","text/html");
   });
 
   server.on("/w3.css", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -104,12 +125,19 @@ void setup()
     request->send(SPIFFS, "/script.js", "text/javascript");
   });
 
-  server.on("/lireLuminosite", HTTP_GET, [](AsyncWebServerRequest *request)
+  server.on("/envoid1", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    int val = analogRead(capteurLuminosite);
-    String luminosite = String(val);
-    request->send(200, "text/plain", luminosite);
-  });
+    String val = String(WiFi.localIP());
+    request->send(200, "text/plain", WiFi.localIP().toString());
+    Serial.println("envoid1");
+    });
+
+server.on("/envoiData", HTTP_GET, [](AsyncWebServerRequest *request)
+{
+  request->send(200,"text/xml",chaine());
+  Serial.println("envoiData");
+});
+
 
   server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request)
   {
