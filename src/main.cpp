@@ -62,7 +62,6 @@ String chaine(void){
     ch=ch+String("<hostname>")+String(INITIAL_VALUE.hostname)+String("</hostname>");
     ch=ch+String("<portrtsp>")+String(INITIAL_VALUE.rtsp_port)+String("</portrtsp>");
     ch=ch+String("</inputs>");
-    Serial.println(ch);
   return ch; 
 };
 void setup()
@@ -123,6 +122,11 @@ void setup()
   server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     request->send(SPIFFS, "/script.js", "text/javascript");
+  });
+  
+  server.on("/jquery-3.4.1.min.js", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+    request->send(SPIFFS, "/jquery-3.4.1.min.js", "text/javascript");
   });
 
   server.on("/envoid1", HTTP_GET, [](AsyncWebServerRequest *request)
