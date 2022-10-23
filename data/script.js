@@ -1,3 +1,24 @@
+//Fonction de commande Javascript avec Jquery
+
+$(document).ready(function(){
+    $("#boutonTest").click(function(){
+        var valeur = $("#inputhost").val();
+        if (confirm("Vous confirmer le redémarrage ?")) {
+            $.post("ssidName",{
+                nomssid: valeur});
+            }});
+    });
+
+    $(document).ready(function(){
+        $("#appliquer").click(function(){
+            var valeur = $("#choixDelayLed").val();
+            $.post("delayLed",{
+                valeurDelayLed: valeur
+            });
+        });
+    });
+    
+
 function saveButton() {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "save", true);
@@ -24,7 +45,7 @@ setInterval(function getData()
     {                                                                               
         if(this.readyState == 4 && this.status == 200)
         {
-            document.getElementById("var1").innerHTML = this.responseText;
+            document.getElementById("inputssid").innerHTML = this.responseText;
         }
     };
 

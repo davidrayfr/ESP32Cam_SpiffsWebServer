@@ -5,8 +5,11 @@
 #include "SPIFFS.h"
 #include "ESPAsyncWebServer.h"
 
-const char *ssid = "MaisonRay300";
-const char *password = "CamilleEmilie";
+//const char *ssid = "MaisonRay300";
+//const char *password = "CamilleEmilie";
+const char *ssid = "Vatan2.4";
+const char *password = "Vascjbb5";
+
 const int led = 2;
 const int capteurLuminosite = 34;
 const char *version= "0.1";
@@ -124,9 +127,25 @@ void setup()
     request->send(SPIFFS, "/script.js", "text/javascript");
   });
   
-  server.on("/jquery-3.4.1.min.js", HTTP_GET, [](AsyncWebServerRequest *request)
+  server.on("/jquery-3.6.1.min.js", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-    request->send(SPIFFS, "/jquery-3.4.1.min.js", "text/javascript");
+    request->send(SPIFFS, "/jquery-3.6.1.min.js", "text/javascript");
+  });
+
+server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+  request->send(SPIFFS,"/favicon.ico","image/ico");
+  });
+
+  server.on("/ssidName", HTTP_POST, [](AsyncWebServerRequest *request) {
+    if(request->hasParam("nomssid", true))
+    {
+      String message;
+      message = request->getParam("nomssid", true)->value();
+      Serial.print("Wifi Nom reçu :");
+      Serial.println(message);
+    }
+    request->send(204);
   });
 
   server.on("/envoid1", HTTP_GET, [](AsyncWebServerRequest *request)
