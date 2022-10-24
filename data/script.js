@@ -21,20 +21,24 @@ $(document).ready(function(){
 
 function saveButton() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "save", true);
-    xhttp.send();
+    if (confirm("Confirmer la sauvegarde ?")) {
+        xhttp.open("GET", "save", true);
+        xhttp.send();
+        };
 }
 
 function reinitButton() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "reinit", true);
-    xhttp.send();
+    if (confirm("Confirmer la reinitialisation ?\n (Attention les données de connection seront perdues)")) {
+        xhttp.open("GET", "reinit", true);
+        xhttp.send();
+        };
 }
 
 function restartButton() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "restart", true);
-    xhttp.send();
+        xhttp.open("GET", "restart", true);
+        xhttp.send();
 }
 
 setInterval(function getData()
