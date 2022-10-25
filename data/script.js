@@ -1,11 +1,15 @@
 //Fonction de commande Javascript avec Jquery
 
 $(document).ready(function(){
-    $("#boutonTest").click(function(){
+    $("#saveButton").click(function(){
         var valeur = $("#inputhost").val();
         if (confirm("Vous confirmer le redémarrage ?")) {
-            $.post("ssidName",{
-                nomssid: valeur});
+            $.post("receivedData",{
+            hostname: valeur,
+            nomssid: valeur,
+            wifipassword: valeur,
+            portrtsp: valeur}
+            );
             }});
     });
 
@@ -41,23 +45,21 @@ function restartButton() {
         xhttp.send();
 }
 
-setInterval(function getData()
-{
-    var xhttp = new XMLHttpRequest();
+//setInterval(function getData2()
+//{
+//    var xhttp = new XMLHttpRequest();
+//    xhttp.onreadystatechange = function()
+//    {                                                                               
+//        if(this.readyState == 4 && this.status == 200)
+//        {
+//            document.getElementById("inputssid").innerHTML = this.responseText;
+//        }
+//    };
+//    xhttp.open("GET", "envoid1", true);
+//    xhttp.send();
+//}, 2000);
 
-    xhttp.onreadystatechange = function()
-    {                                                                               
-        if(this.readyState == 4 && this.status == 200)
-        {
-            document.getElementById("inputssid").innerHTML = this.responseText;
-        }
-    };
-
-    xhttp.open("GET", "envoid1", true);
-    xhttp.send();
-}, 2000);
-
-setInterval(function getData2()
+function getData()
 {
     var xhttp = new XMLHttpRequest();
 
@@ -65,16 +67,16 @@ setInterval(function getData2()
     {
         if(this.readyState == 4 && this.status == 200)
         {
-        document.getElementById("inputversion").innerHTML = this.responseXML.getElementsByTagName('version')[0].childNodes[0].nodeValue; 
-        document.getElementById("inputipadresse").innerHTML = this.responseXML.getElementsByTagName('ipadresse')[0].childNodes[0].nodeValue; 
-        document.getElementById("inputssid").innerHTML = this.responseXML.getElementsByTagName('ssid')[0].childNodes[0].nodeValue; 
-        document.getElementById("inputhostname").innerHTML = this.responseXML.getElementsByTagName('hostname')[0].childNodes[0].nodeValue;     
-        document.getElementById("inputportrtsp").innerHTML = this.responseXML.getElementsByTagName('portrtsp')[0].childNodes[0].nodeValue;     
+        document.getElementById("displayversion").innerHTML = this.responseXML.getElementsByTagName('version')[0].childNodes[0].nodeValue; 
+        document.getElementById("displayipadresse").innerHTML = this.responseXML.getElementsByTagName('ipadresse')[0].childNodes[0].nodeValue; 
+        document.getElementById("displayssid").innerHTML = this.responseXML.getElementsByTagName('namessid')[0].childNodes[0].nodeValue; 
+        document.getElementById("displayhostname").innerHTML = this.responseXML.getElementsByTagName('hostname')[0].childNodes[0].nodeValue;     
+        document.getElementById("displayportrtsp").innerHTML = this.responseXML.getElementsByTagName('portrtsp')[0].childNodes[0].nodeValue;     
         var element=document.getElementById("inputhostname").innerHTML;
         }
     };
 
-    xhttp.open("GET", "envoiData", true);
+    xhttp.open("GET", "sendData", true);
     xhttp.send();
-}, 2000);
+};
 

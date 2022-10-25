@@ -5,10 +5,10 @@
 #include "SPIFFS.h"
 #include "ESPAsyncWebServer.h"
 
-//const char *ssid = "MaisonRay300";
-//const char *password = "CamilleEmilie";
-const char *ssid = "Vatan2.4";
-const char *password = "Vascjbb5";
+const char *ssid = "MaisonRay300";
+const char *password = "CamilleEmilie";
+//const char *ssid = "Vatan2.4";
+//const char *password = "Vascjbb5";
 
 const int led = 2;
 const int capteurLuminosite = 34;
@@ -47,6 +47,8 @@ const struct EEPROM_Data INITIAL_VALUE={
 
 AsyncWebServer server(80);
 
+EEPROM_Data memory;
+
 /*String processor(const String& var){
   Serial.println(var);
   if(var == "ADRESSEIP"){
@@ -57,13 +59,13 @@ AsyncWebServer server(80);
   return String();
 }*/
 
-String chaine(void){
+String XML_ConnectionData(void){
   String ch=String("<?xml version = \"1.0\" ?>")+String("<inputs>");
     ch=ch+String("<version>")+String(version)+String("</version>");
     ch=ch+String("<ipadresse>")+WiFi.localIP().toString()+String("</ipadresse>"); 
-    ch=ch+String("<ssid>")+String(INITIAL_VALUE.ssid)+String("</ssid>"); 
-    ch=ch+String("<hostname>")+String(INITIAL_VALUE.hostname)+String("</hostname>");
-    ch=ch+String("<portrtsp>")+String(INITIAL_VALUE.rtsp_port)+String("</portrtsp>");
+    ch=ch+String("<namessid>")+String(memory.ssid)+String("</ssid>"); 
+    ch=ch+String("<hostname>")+String(memory.hostname)+String("</hostname>");
+    ch=ch+String("<portrtsp>")+String(memory.rtsp_port)+String("</portrtsp>");
     ch=ch+String("</inputs>");
   return ch; 
 };
@@ -72,7 +74,7 @@ void setup()
   //----------------------------------------------------Serial
   Serial.begin(115200);
   Serial.println("\n");
-
+  memory=INITIAL_VALUE;
   //----------------------------------------------------GPIO
   pinMode(led, OUTPUT);
   digitalWrite(led, LOW);
@@ -116,28 +118,24 @@ void setup()
   {
     request->send(SPIFFS, "/index.html","text/html");
   });
-
   server.on("/w3.css", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     request->send(SPIFFS, "/w3.css", "text/css");
   });
-
   server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     request->send(SPIFFS, "/script.js", "text/javascript");
-  });
-  
+  }); 
   server.on("/jquery-3.6.1.min.js", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     request->send(SPIFFS, "/jquery-3.6.1.min.js", "text/javascript");
   });
-
-server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request)
+  server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-  request->send(SPIFFS,"/favicon.ico","image/ico");
+    request->send(SPIFFS,"/favicon.ico","image/ico");
   });
 
-  server.on("/ssidName", HTTP_POST, [](AsyncWebServerRequest *request) {
+  server.on("/receivedData", HTTP_POST, [](AsyncWebServerRequest *request) {
     if(request->hasParam("nomssid", true))
     {
       String message;
@@ -155,11 +153,13 @@ server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request)
     Serial.println("envoid1");
     });
 
-server.on("/envoiData", HTTP_GET, [](AsyncWebServerRequest *request)
-{
-  request->send(200,"text/xml",chaine());
+//Envoie les data de la connection en XML
+//via la fonction chaine
+  server.on("/sendData", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+  request->send(200,"text/xml",XML_ConnectionData());
   Serial.println("envoiData");
-});
+  });
 
 
   server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request)
