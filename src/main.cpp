@@ -159,22 +159,38 @@ server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
     request->send(204);
   });
 */
-server.on("/receiveData", HTTP_POST, [](AsyncWebServerRequest *request) {
-    {
-      String wifiname = request->getParam("hostname", true)->value();
-      String hostname = request->getParam("wifiname", true)->value();
-      String wifipassword = request->getParam("wifipassword", true)->value();
-      String portrtsp = request->getParam("portrtsp", true)->value();
-      Serial.println(wifiname);
+server.on("/receiveData", HTTP_POST, [](AsyncWebServerRequest *request){
+    Serial.println("receiveData");
+    if(request->hasParam("hostname", true)){
+      String hostname = request->getParam("hostname", true)->value();
       Serial.println(hostname);
+    };
+     if(request->hasParam("wifiname", true)){
+      String wifiname = request->getParam("wifiname", true)->value();
+      Serial.println(wifiname);
+     };
+      if(request->hasParam("wifipassword", true)){
+      String wifipassword = request->getParam("wifipassword", true)->value();
       Serial.println(wifipassword);
+      };
+      if(request->hasParam("networktype", true)){
+      String networktype = request->getParam("networktype", true)->value();
+      Serial.println(networktype);
+     };
+      if(request->hasParam("rtspenable", true)){
+      String rtspenable = request->getParam("rtspenable", true)->value();
+      Serial.println(rtspenable);
+      };
+      if(request->hasParam("httpenable", true)){
+      String httpenable = request->getParam("httpenable", true)->value();
+      Serial.println(httpenable);
+      };
+      if(request->hasParam("portrtsp", true)){
+      String portrtsp = request->getParam("portrtsp", true)->value();
       Serial.println(portrtsp);
-    }
+      };
     request->send(204);
- hostname: valeur,
-            nomssid: valeur,
-            wifipassword: valeur,
-            portrtsp: valeur}
+});
 
   /*server.on("/envoid1", HTTP_GET, [](AsyncWebServerRequest *request)
   {

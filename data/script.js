@@ -2,19 +2,23 @@
 
 $(document).ready(function(){
     $("#saveButton").click(function(){
-        //var valeur = $("#inputhost").val();
-
-        //if (confirm("Vous confirmer le redémarrage ?")) {
+        var valeur = document.querySelector('input[name="networktype"]:checked').value;
+        if (confirm("Vous confirmer la sauvegarde et le redémarrage ?"))
+        {
             $.post("receiveData",{
-            hostname: $("#inputhosnamet").val(),
+            hostname: $("#inputhostname").val(),
             wifiname: $("#inputwifiname").val(),
             wifipassword: $("#inputwifipassword").val(),
-            portrtsp: $("#inputportrtsp").val()}
-            );
-            }
-        //}
-        );
+            //networktype: document.getElementsByName("networktype").,
+            networktype: valeur,
+            httpenable: document.getElementById("HTTPcheckboxId").checked,
+            rtspenable : document.getElementById("RTSPcheckboxId").checked,
+            portrtsp: $("#inputportrtsp").val()
+            });
+        };
     });
+});
+
 
 function reinitButton() {
     var xhttp = new XMLHttpRequest();
@@ -52,7 +56,7 @@ function getData()
         };
         if(this.responseXML.getElementsByTagName('http_enable')[0].childNodes[0].nodeValue == "1")
         {
-            HTMLcheckboxId.checked=true;
+            HTTPcheckboxId.checked=true;
         };
         if(this.responseXML.getElementsByTagName('rtsp_enable')[0].childNodes[0].nodeValue == "1")
         {
