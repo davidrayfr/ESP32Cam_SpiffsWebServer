@@ -12,7 +12,7 @@ const char *password = "CamilleEmilie";
 
 const int led = 2;
 const int capteurLuminosite = 34;
-const char *version= "0.1";
+const char *version= "Version 0.1";
 
 /*
 WIFI_OFF     WIFI_MODE_NULL
@@ -35,13 +35,13 @@ struct EEPROM_Data {
 //Initial Valeur stored in EEPROM
 const struct EEPROM_Data INITIAL_VALUE={
                     STRUCT_MAGIC,
-                    "STA",
-                   "MaisonRay300",
+                    "AP",
+                    "MaisonRay300",
                     "CamilleEmilie",
                     "123456",
                     "Esp32Cam",
-                    false,
-                   false,
+                    true,
+                   true,
                     554
                 };
 
@@ -60,10 +60,11 @@ EEPROM_Data memory;
 }*/
 
 String XML_ConnectionData(void){
-  String ch=String("<?xml version = \"1.0\" ?>")+String("<inputs>");
+    String ch=String("<?xml version = \"1.0\" ?>")+String("<inputs>");
     ch=ch+String("<version>")+String(version)+String("</version>");
-    ch=ch+String("<ipadresse>")+WiFi.localIP().toString()+String("</ipadresse>"); 
-    ch=ch+String("<namessid>")+String(memory.ssid)+String("</ssid>"); 
+    ch=ch+String("<wifimode>")+String(memory.WiFiMode)+String("</wifimode>");
+    ch=ch+String("<ipadresse>")+WiFi.localIP().toString()+String("</ipadresse>");
+    ch=ch+String("<namessid>")+String(memory.ssid)+String("</namessid>"); 
     ch=ch+String("<hostname>")+String(memory.hostname)+String("</hostname>");
     if (memory.http_enable) 
       {ch=ch+String("<http_enable>")+"1"+String("</http_enable>");}
@@ -72,7 +73,7 @@ String XML_ConnectionData(void){
     if (memory.rtsp_enable)
       {ch=ch+String("<rtsp_enable>")+"1"+String("</rtsp_enable>");}
       else
-      {ch=ch+String("<rtsp_enable>")+"0"+String("</rtsp_enable>");}
+      {ch=ch+String("<rtsp_enable>")+"0"+String("</rtsp_enable>");};
     ch=ch+String("<portrtsp>")+String(memory.rtsp_port)+String("</portrtsp>");
     ch=ch+String("</inputs>");
   return ch; 
@@ -144,7 +145,7 @@ void setup()
   });
 server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-  request->send(200,"/Camera_img.png","image/png");
+  request->send(SPIFFS,"/Camera_img.png","image/png");
   });
 
   server.on("/receivedData", HTTP_POST, [](AsyncWebServerRequest *request) {
@@ -167,12 +168,19 @@ server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
 
 //Envoie les data de la connection en XML
 //via la fonction chaine
-  server.on("/sendData", HTTP_GET, [](AsyncWebServerRequest *request)
+  server.on("/getData", HTTP_GET, [](AsyncWebServerRequest *request)
   {
-  request->send(200,"text/xml",XML_ConnectionData());
   Serial.println("envoiData");
+  Serial.println(XML_ConnectionData());
+  request->send(200,"text/xml",XML_ConnectionData());
   });
 
+  server.on("/getInputTest", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+  Serial.println("getInputTest");
+  Serial.println("<?xml version = \"1.0\" ?><inputs><button1>ON</button1></inputs>");
+  request->send(200,"text/xml","<?xml version = \"1.0\" ?><inputs><button1>ON</button1></inputs>");
+  });
 
   server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request)
   {

@@ -13,7 +13,7 @@ $(document).ready(function(){
             }});
     });
 
-    $(document).ready(function(){
+$(document).ready(function(){
         $("#appliquer").click(function(){
             var valeur = $("#choixDelayLed").val();
             $.post("delayLed",{
@@ -22,14 +22,13 @@ $(document).ready(function(){
         });
     });
     
-
 function saveButton() {
     var xhttp = new XMLHttpRequest();
     if (confirm("Confirmer la sauvegarde ?")) {
         xhttp.open("GET", "save", true);
         xhttp.send();
         };
-}
+};
 
 function reinitButton() {
     var xhttp = new XMLHttpRequest();
@@ -37,13 +36,13 @@ function reinitButton() {
         xhttp.open("GET", "reinit", true);
         xhttp.send();
         };
-}
+};
 
 function restartButton() {
     var xhttp = new XMLHttpRequest();
         xhttp.open("GET", "restart", true);
         xhttp.send();
-}
+};
 
 //setInterval(function getData2()
 //{
@@ -62,7 +61,6 @@ function restartButton() {
 function getData()
 {
     var xhttp = new XMLHttpRequest();
-
     xhttp.onreadystatechange = function()
     {
         if(this.readyState == 4 && this.status == 200)
@@ -72,10 +70,37 @@ function getData()
         document.getElementById("displayssid").innerHTML = this.responseXML.getElementsByTagName('namessid')[0].childNodes[0].nodeValue; 
         document.getElementById("displayhostname").innerHTML = this.responseXML.getElementsByTagName('hostname')[0].childNodes[0].nodeValue;     
         document.getElementById("displayportrtsp").innerHTML = this.responseXML.getElementsByTagName('portrtsp')[0].childNodes[0].nodeValue;     
-        var element=document.getElementById("inputhostname").innerHTML;
+        if(this.responseXML.getElementsByTagName('wifimode')[0].childNodes[0].nodeValue == "STA")
+        {
+            AccessPointId.checked=true;
+        };
+        if(this.responseXML.getElementsByTagName('wifimode')[0].childNodes[0].nodeValue == "AP")
+        {
+            AccessWifiId.checked=true;
+        };
+        if(this.responseXML.getElementsByTagName('http_enable')[0].childNodes[0].nodeValue == "1")
+        {
+            HTMLcheckboxId.checked=true;
+        };
+        if(this.responseXML.getElementsByTagName('rtsp_enable')[0].childNodes[0].nodeValue == "1")
+        {
+            RTSPcheckboxId.checked=true;
+        };
+        //var element=document.getElementById("inputhostname").innerHTML;
+
         }
     };
-    xhttp.open("GET", "sendData", true);
+    xhttp.open("GET", "getData", true);
     xhttp.send();
 };
+
+//setInterval(function getInputTest() {
+//    var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() {
+//    if (this.readyState == 4 && this.status == 200)
+//    {
+//    document.getElementById("displayhostname").innerHTML = this.responseXML.getElementsByTagName('button1')[0].childNodes[0].nodeValue; document.getElementById("input2").innerHTML = this.responseXML.getElementsByTagName('button2')[0].childNodes[0].nodeValue; }
+//    };
+//    xhttp.open("GET", "getInputTest", true);
+//    xhttp.send();
+//}, 2000);
 
