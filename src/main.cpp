@@ -65,6 +65,14 @@ String XML_ConnectionData(void){
     ch=ch+String("<ipadresse>")+WiFi.localIP().toString()+String("</ipadresse>"); 
     ch=ch+String("<namessid>")+String(memory.ssid)+String("</ssid>"); 
     ch=ch+String("<hostname>")+String(memory.hostname)+String("</hostname>");
+    if (memory.http_enable) 
+      {ch=ch+String("<http_enable>")+"1"+String("</http_enable>");}
+      else
+      {ch=ch+String("<http_enable>")+"0"+String("</http_enable>");}
+    if (memory.rtsp_enable)
+      {ch=ch+String("<rtsp_enable>")+"1"+String("</rtsp_enable>");}
+      else
+      {ch=ch+String("<rtsp_enable>")+"0"+String("</rtsp_enable>");}
     ch=ch+String("<portrtsp>")+String(memory.rtsp_port)+String("</portrtsp>");
     ch=ch+String("</inputs>");
   return ch; 
@@ -133,6 +141,10 @@ void setup()
   server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     request->send(SPIFFS,"/favicon.ico","image/ico");
+  });
+server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
+  request->send(200,"/Camera_img.png","image/png");
   });
 
   server.on("/receivedData", HTTP_POST, [](AsyncWebServerRequest *request) {

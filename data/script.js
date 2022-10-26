@@ -75,7 +75,6 @@ function getData()
         var element=document.getElementById("inputhostname").innerHTML;
         }
     };
-
     xhttp.open("GET", "sendData", true);
     xhttp.send();
 };
