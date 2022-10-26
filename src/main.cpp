@@ -148,7 +148,7 @@ server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
   request->send(SPIFFS,"/Camera_img.png","image/png");
   });
 
-  server.on("/receivedData", HTTP_POST, [](AsyncWebServerRequest *request) {
+  /*server.on("/receiveData", HTTP_POST, [](AsyncWebServerRequest *request) {
     if(request->hasParam("nomssid", true))
     {
       String message;
@@ -158,14 +158,31 @@ server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
     }
     request->send(204);
   });
+*/
+server.on("/receiveData", HTTP_POST, [](AsyncWebServerRequest *request) {
+    {
+      String wifiname = request->getParam("hostname", true)->value();
+      String hostname = request->getParam("wifiname", true)->value();
+      String wifipassword = request->getParam("wifipassword", true)->value();
+      String portrtsp = request->getParam("portrtsp", true)->value();
+      Serial.println(wifiname);
+      Serial.println(hostname);
+      Serial.println(wifipassword);
+      Serial.println(portrtsp);
+    }
+    request->send(204);
+ hostname: valeur,
+            nomssid: valeur,
+            wifipassword: valeur,
+            portrtsp: valeur}
 
-  server.on("/envoid1", HTTP_GET, [](AsyncWebServerRequest *request)
+  /*server.on("/envoid1", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     String val = String(WiFi.localIP());
     request->send(200, "text/plain", WiFi.localIP().toString());
     Serial.println("envoid1");
     });
-
+*/
 //Envoie les data de la connection en XML
 //via la fonction chaine
   server.on("/getData", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -175,13 +192,13 @@ server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
   request->send(200,"text/xml",XML_ConnectionData());
   });
 
-  server.on("/getInputTest", HTTP_GET, [](AsyncWebServerRequest *request)
+  /*server.on("/getInputTest", HTTP_GET, [](AsyncWebServerRequest *request)
   {
   Serial.println("getInputTest");
   Serial.println("<?xml version = \"1.0\" ?><inputs><button1>ON</button1></inputs>");
   request->send(200,"text/xml","<?xml version = \"1.0\" ?><inputs><button1>ON</button1></inputs>");
   });
-
+*/
   server.on("/restart", HTTP_GET, [](AsyncWebServerRequest *request)
   {
     Serial.println("RESTART BUTTON");

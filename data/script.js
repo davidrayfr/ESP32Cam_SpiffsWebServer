@@ -2,33 +2,19 @@
 
 $(document).ready(function(){
     $("#saveButton").click(function(){
-        var valeur = $("#inputhost").val();
-        if (confirm("Vous confirmer le redémarrage ?")) {
-            $.post("receivedData",{
-            hostname: valeur,
-            nomssid: valeur,
-            wifipassword: valeur,
-            portrtsp: valeur}
-            );
-            }});
-    });
+        //var valeur = $("#inputhost").val();
 
-$(document).ready(function(){
-        $("#appliquer").click(function(){
-            var valeur = $("#choixDelayLed").val();
-            $.post("delayLed",{
-                valeurDelayLed: valeur
-            });
-        });
+        //if (confirm("Vous confirmer le redémarrage ?")) {
+            $.post("receiveData",{
+            hostname: $("#inputhosnamet").val(),
+            wifiname: $("#inputwifiname").val(),
+            wifipassword: $("#inputwifipassword").val(),
+            portrtsp: $("#inputportrtsp").val()}
+            );
+            }
+        //}
+        );
     });
-    
-function saveButton() {
-    var xhttp = new XMLHttpRequest();
-    if (confirm("Confirmer la sauvegarde ?")) {
-        xhttp.open("GET", "save", true);
-        xhttp.send();
-        };
-};
 
 function reinitButton() {
     var xhttp = new XMLHttpRequest();
@@ -43,20 +29,6 @@ function restartButton() {
         xhttp.open("GET", "restart", true);
         xhttp.send();
 };
-
-//setInterval(function getData2()
-//{
-//    var xhttp = new XMLHttpRequest();
-//    xhttp.onreadystatechange = function()
-//    {                                                                               
-//        if(this.readyState == 4 && this.status == 200)
-//        {
-//            document.getElementById("inputssid").innerHTML = this.responseText;
-//        }
-//    };
-//    xhttp.open("GET", "envoid1", true);
-//    xhttp.send();
-//}, 2000);
 
 function getData()
 {
@@ -94,6 +66,29 @@ function getData()
     xhttp.send();
 };
 
+//function saveButton() {
+//    var xhttp = new XMLHttpRequest();
+//    if (confirm("Confirmer la sauvegarde ?")) {
+//        xhttp.open("GET", "save", true);
+//        xhttp.send();
+//        };
+//};
+
+// Fonctions de développement
+//setInterval(function getData2()
+//{
+//    var xhttp = new XMLHttpRequest();
+//    xhttp.onreadystatechange = function()
+//    {                                                                               
+//        if(this.readyState == 4 && this.status == 200)
+//        {
+//            document.getElementById("inputssid").innerHTML = this.responseText;
+//        }
+//    };
+//    xhttp.open("GET", "envoid1", true);
+//    xhttp.send();
+//}, 2000);
+
 //setInterval(function getInputTest() {
 //    var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() {
 //    if (this.readyState == 4 && this.status == 200)
@@ -104,3 +99,11 @@ function getData()
 //    xhttp.send();
 //}, 2000);
 
+//$(document).ready(function(){
+//    $("#appliquer").click(function(){
+//        var valeur = $("#choixDelayLed").val();
+//        $.post("delayLed",{
+//            valeurDelayLed: valeur
+//        });
+//    });
+//});
