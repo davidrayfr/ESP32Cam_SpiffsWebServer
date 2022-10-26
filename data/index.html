@@ -107,9 +107,9 @@ input:checked + .slider:before {
     </div>
         
     <h4>
-      <input class="w3-radio" type="radio" name="networkType" value="AccessPoint" checked>
+      <input class="w3-radio" type="radio" name="networkType" id="AccessPointId" value="AccessPoint">
       <label>Access Point</label>
-      <input class="w3-radio" type="radio" name="networkType" value="AccessWifi">
+      <input class="w3-radio" type="radio" name="networkType" id="AccessWifiId" value="AccessWifi">
       <label>WiFi Client</label>
     </h4>
 
@@ -118,7 +118,7 @@ input:checked + .slider:before {
         <label class="w3-label w3-right" type="text" for="WiFiName">WiFi Network (<span id="displayssid">?</span>):</label>
       </div>
       <div class="w3-half">
-        <input class="w3-input w3-left" placeholder="input WiFi Name" type="text" style="width: 250px;">
+        <input class="w3-input w3-left" placeholder="New WiFi Network" type="text" style="width: 250px;">
       </div> 
     </h4></div>
 
@@ -127,24 +127,24 @@ input:checked + .slider:before {
         <label class="w3-label w3-right" type="text" for="WiFiPassword">WiFi Password :</label>
       </div>
       <div class="w3-half">
-        <input class="w3-input w3-left" placeholder="First Name" type="inputpassword" style="width: 250px;">
+        <input class="w3-input w3-left" placeholder="Input Password" type="inputpassword" style="width: 250px;">
       </div>
     </h4></div>
 
     <h4>
       <label class="w3-label w3-center"><label for="FluxVideo">Flux Video :</label>
-      <input class="w3-check w3-padding" type="checkbox">
+      <input class="w3-check w3-padding" id="HTMLcheckboxId" type="checkbox">
       <label>HTML</label>
-      <input class="w3-check w3-padding" type="checkbox">
+      <input class="w3-check w3-padding" id="RTSPcheckboxId" type="checkbox">
       <label>RTSP</label>
     </h4>    
 
     <div class="w3-row-padding"><h4>
       <div class="w3-half">
-        <label class="w3-label w3-right" type=""text" for="RTSPPort">RTSP Port (<span id="displayportrtsp">?</span><span>):</span></label>
+        <label class="w3-label w3-right" type="text" for="RTSPPort">RTSP Port (<span id="displayportrtsp">?</span><span>):</span></label>
       </div>     
       <div class="w3-half">
-        <input class="w3-input w3-left" placeholder="input RTSP port" type="text" style="width: 250px;">
+        <input class="w3-input w3-left" placeholder="New RTSP port" type="text" style="width: 250px;">
       </div></h4>
     </div>
   </div>
