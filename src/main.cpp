@@ -22,7 +22,7 @@ WIFI_AP_STA  WIFI_MODE_APSTA */
 
 struct EEPROM_Data {
   long unsigned int magic;
-  char WiFiMode[4];
+  char WiFiMode[11];
   char ssid[32];
   char WiFiPassword[32];
   char OTApassword[32];
@@ -35,7 +35,7 @@ struct EEPROM_Data {
 //Initial Valeur stored in EEPROM
 const struct EEPROM_Data INITIAL_VALUE={
                     STRUCT_MAGIC,
-                    "AP",
+                    "WIFI_AP",
                     "MaisonRay300",
                     "CamilleEmilie",
                     "123456",
@@ -67,13 +67,13 @@ String XML_ConnectionData(void){
     ch=ch+String("<namessid>")+String(memory.ssid)+String("</namessid>"); 
     ch=ch+String("<hostname>")+String(memory.hostname)+String("</hostname>");
     if (memory.http_enable) 
-      {ch=ch+String("<http_enable>")+"1"+String("</http_enable>");}
+      {ch=ch+String("<http_enable>")+"true"+String("</http_enable>");}
       else
-      {ch=ch+String("<http_enable>")+"0"+String("</http_enable>");}
+      {ch=ch+String("<http_enable>")+"false"+String("</http_enable>");}
     if (memory.rtsp_enable)
-      {ch=ch+String("<rtsp_enable>")+"1"+String("</rtsp_enable>");}
+      {ch=ch+String("<rtsp_enable>")+"true"+String("</rtsp_enable>");}
       else
-      {ch=ch+String("<rtsp_enable>")+"0"+String("</rtsp_enable>");};
+      {ch=ch+String("<rtsp_enable>")+"false"+String("</rtsp_enable>");};
     ch=ch+String("<portrtsp>")+String(memory.rtsp_port)+String("</portrtsp>");
     ch=ch+String("</inputs>");
   return ch; 
@@ -159,6 +159,7 @@ server.on("/Camera_img.png", HTTP_GET, [](AsyncWebServerRequest *request)
     request->send(204);
   });
 */
+/* fonction de reception des data du client */
 server.on("/receiveData", HTTP_POST, [](AsyncWebServerRequest *request){
     Serial.println("receiveData");
     if(request->hasParam("hostname", true)){
@@ -199,8 +200,9 @@ server.on("/receiveData", HTTP_POST, [](AsyncWebServerRequest *request){
     Serial.println("envoid1");
     });
 */
-//Envoie les data de la connection en XML
-//via la fonction chaine
+
+/* Fonction envoi des données du serveur vers le client
+Data en XML */
   server.on("/getData", HTTP_GET, [](AsyncWebServerRequest *request)
   {
   Serial.println("envoiData");
@@ -239,5 +241,4 @@ server.on("/receiveData", HTTP_POST, [](AsyncWebServerRequest *request){
 
 void loop()
 {
-
 }

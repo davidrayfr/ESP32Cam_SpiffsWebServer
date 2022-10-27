@@ -46,19 +46,19 @@ function getData()
         document.getElementById("displayssid").innerHTML = this.responseXML.getElementsByTagName('namessid')[0].childNodes[0].nodeValue; 
         document.getElementById("displayhostname").innerHTML = this.responseXML.getElementsByTagName('hostname')[0].childNodes[0].nodeValue;     
         document.getElementById("displayportrtsp").innerHTML = this.responseXML.getElementsByTagName('portrtsp')[0].childNodes[0].nodeValue;     
-        if(this.responseXML.getElementsByTagName('wifimode')[0].childNodes[0].nodeValue == "STA")
+        if(this.responseXML.getElementsByTagName('wifimode')[0].childNodes[0].nodeValue == "WIFI_STA")
         {
             AccessPointId.checked=true;
         };
-        if(this.responseXML.getElementsByTagName('wifimode')[0].childNodes[0].nodeValue == "AP")
+        if(this.responseXML.getElementsByTagName('wifimode')[0].childNodes[0].nodeValue == "WIFI_AP")
         {
             AccessWifiId.checked=true;
         };
-        if(this.responseXML.getElementsByTagName('http_enable')[0].childNodes[0].nodeValue == "1")
+        if(this.responseXML.getElementsByTagName('http_enable')[0].childNodes[0].nodeValue == "true")
         {
             HTTPcheckboxId.checked=true;
         };
-        if(this.responseXML.getElementsByTagName('rtsp_enable')[0].childNodes[0].nodeValue == "1")
+        if(this.responseXML.getElementsByTagName('rtsp_enable')[0].childNodes[0].nodeValue == "true")
         {
             RTSPcheckboxId.checked=true;
         };
